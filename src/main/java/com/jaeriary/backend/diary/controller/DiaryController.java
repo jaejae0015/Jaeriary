@@ -1,33 +1,39 @@
 package com.jaeriary.backend.diary.controller;
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.jaeriary.backend.diary.dto.DiaryCreateRequest;
-import com.jaeriary.backend.diary.dto.DiaryResponse;
+import com.jaeriary.backend.diary.dto.*;
+import com.jaeriary.backend.diary.entity.Diary;
 import com.jaeriary.backend.diary.service.DiaryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/diaries")
+@RequiredArgsConstructor
 public class DiaryController {
 
     private final DiaryService diaryService;
 
-    public DiaryController(DiaryService diaryService) {
-        this.diaryService = diaryService;
+    @GetMapping
+    public List<Diary> list() {
+        return diaryService.findAll();
     }
 
     @PostMapping
-    public DiaryResponse create(@RequestBody DiaryCreateRequest request) {
+    public Diary create(@RequestBody DiaryCreateRequest request) {
         return diaryService.create(request);
     }
 
-    @GetMapping
-    public List<DiaryResponse> list() {
-        return diaryService.findAll();
+    @PutMapping("/{id}")
+    public Diary update(
+            @PathVariable("id") Long id,
+            @RequestBody DiaryUpdateRequest request
+    ) {
+        return diaryService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        diaryService.delete(id);
     }
 }

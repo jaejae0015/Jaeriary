@@ -1,7 +1,11 @@
 package com.jaeriary.backend.diary.dto;
 
-public record DiaryCreateRequest(
-        String title,
-        String content
-) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class DiaryCreateRequest {
+    private String title;
+    private String content;
 }
